@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/felipedias-dev/clean-tdd-node-api/issues"
   },
-  "homepage": "https://github.com/felipedias-dev/clean-tdd-node-api#readme"
+  "homepage": "https://github.com/felipedias-dev/clean-tdd-node-api#readme",
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
 }
