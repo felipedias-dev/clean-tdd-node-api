@@ -1,6 +1,7 @@
 {
   "src/**/*.js": [
     "eslint --fix",
-    "prettier --write"
+    "prettier --write",
+    "npm run test:staged"
   ]
 }
