@@ -13,7 +13,7 @@
         "sourceType": "module"
     },
     "rules": {
-      "no-unused-vars": "off",
+      "no-unused-vars": "warn",
       "class-methods-use-this": "off",
       "consistent-return": "off",
       "max-classes-per-file": "off",
