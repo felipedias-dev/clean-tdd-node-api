@@ -2,6 +2,12 @@ const { MissingParamError, InvalidParamError } = require('../../utils/errors');
 const AuthUseCase = require('./auth-usecase');
 
 const makeSut = () => {
+  class EncrypterSpy {
+    async compare(password, hashedPassword) {
+      this.password = password;
+      this.hashedPassword = hashedPassword;
+    }
+  }
   class LoadUserByEmailRepositorySpy {
     async load(email) {
       this.email = email;
@@ -9,13 +15,17 @@ const makeSut = () => {
     }
   }
 
+  const encrypterSpy = new EncrypterSpy();
   const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
-  loadUserByEmailRepositorySpy.user = {};
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy);
+  loadUserByEmailRepositorySpy.user = {
+    password: 'hashed_password',
+  };
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy);
 
   return {
     sut,
     loadUserByEmailRepositorySpy,
+    encrypterSpy,
   };
 };
 
@@ -36,9 +46,9 @@ describe('Auth Usecase', () => {
 
   test('Should call LoadUserByEmailRepository with correct email', async () => {
     const { sut, loadUserByEmailRepositorySpy } = makeSut();
-    await sut.auth('any_email@mail.com', 'any_password');
+    await sut.auth('valid_email@mail.com', 'any_password');
 
-    expect(loadUserByEmailRepositorySpy.email).toBe('any_email@mail.com');
+    expect(loadUserByEmailRepositorySpy.email).toBe('valid_email@mail.com');
   });
 
   test('Should throw if no LoadUserByEmailRepository is provided', async () => {
@@ -73,10 +83,20 @@ describe('Auth Usecase', () => {
   test('Should return null if an invalid password is provided', async () => {
     const { sut } = makeSut();
     const accessToken = await sut.auth(
-      'any_email@mail.com',
+      'valid_email@mail.com',
       'invalid_password'
     );
 
     expect(accessToken).toBeNull();
+  });
+
+  test('Should call Encrypter with correct values', async () => {
+    const { sut, loadUserByEmailRepositorySpy, encrypterSpy } = makeSut();
+    await sut.auth('valid_email@mail.com', 'any_password');
+
+    expect(encrypterSpy.password).toBe('any_password');
+    expect(encrypterSpy.hashedPassword).toBe(
+      loadUserByEmailRepositorySpy.user.password
+    );
   });
 });
