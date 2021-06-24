@@ -1,6 +1,32 @@
 const { MissingParamError, InvalidParamError } = require('../../utils/errors');
 const AuthUseCase = require('./auth-usecase');
 
+const makeSut = () => {
+  const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepository();
+  const encrypterSpy = makeEncrypt();
+  const tokenGeneratorSpy = makeTokenGenerator();
+
+  encrypterSpy.isValid = true;
+  loadUserByEmailRepositorySpy.user = {
+    id: 'any_id',
+    password: 'hashed_password',
+  };
+  tokenGeneratorSpy.accessToken = 'any_token';
+
+  const sut = new AuthUseCase(
+    loadUserByEmailRepositorySpy,
+    encrypterSpy,
+    tokenGeneratorSpy
+  );
+
+  return {
+    sut,
+    loadUserByEmailRepositorySpy,
+    encrypterSpy,
+    tokenGeneratorSpy,
+  };
+};
+
 const makeEncrypt = () => {
   class EncrypterSpy {
     async compare(password, hashedPassword) {
@@ -26,22 +52,16 @@ const makeLoadUserByEmailRepository = () => {
   return new LoadUserByEmailRepositorySpy();
 };
 
-const makeSut = () => {
-  const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepository();
-  const encrypterSpy = makeEncrypt();
+const makeTokenGenerator = () => {
+  class TokenGeneratorSpy {
+    async generate(userId) {
+      this.userId = userId;
 
-  encrypterSpy.isValid = true;
-  loadUserByEmailRepositorySpy.user = {
-    password: 'hashed_password',
-  };
+      return this.accessToken;
+    }
+  }
 
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy);
-
-  return {
-    sut,
-    loadUserByEmailRepositorySpy,
-    encrypterSpy,
-  };
+  return new TokenGeneratorSpy();
 };
 
 describe('Auth Usecase', () => {
@@ -116,5 +136,12 @@ describe('Auth Usecase', () => {
     expect(encrypterSpy.hashedPassword).toBe(
       loadUserByEmailRepositorySpy.user.password
     );
+  });
+
+  test('Should call TokenGenerator with correct userId', async () => {
+    const { sut, loadUserByEmailRepositorySpy, tokenGeneratorSpy } = makeSut();
+    await sut.auth('valid_email@mail.com', 'any_password');
+
+    expect(tokenGeneratorSpy.userId).toBe(loadUserByEmailRepositorySpy.user.id);
   });
 });
