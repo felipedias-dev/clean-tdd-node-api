@@ -16,6 +16,22 @@ module.exports = class AuthUseCase {
       throw new InvalidParamError('loadUserByEmailRepository');
     }
 
+    if (!this.encrypter) {
+      throw new MissingParamError('encrypter');
+    }
+
+    if (!this.encrypter.compare) {
+      throw new InvalidParamError('encrypter');
+    }
+
+    if (!this.tokenGenerator) {
+      throw new MissingParamError('tokenGenerator');
+    }
+
+    if (!this.tokenGenerator.generate) {
+      throw new InvalidParamError('tokenGenerator');
+    }
+
     if (!email) {
       throw new MissingParamError('email');
     }
