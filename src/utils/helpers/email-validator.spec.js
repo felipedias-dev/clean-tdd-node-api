@@ -1,6 +1,6 @@
 const validator = require('validator');
 const EmailValidator = require('./email-validator');
-const { MissingParamError } = require('./errors');
+const { MissingParamError } = require('../errors');
 
 const makeSut = () => {
   return new EmailValidator();

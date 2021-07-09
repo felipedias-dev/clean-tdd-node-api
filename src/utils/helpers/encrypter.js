@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { MissingParamError } = require('./errors');
+const { MissingParamError } = require('../errors');
 
 module.exports = class Encrypter {
   async compare(value, hash) {
