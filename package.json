@@ -4,7 +4,7 @@
   "description": "API em NodeJS com Clean Architecture e TDD",
   "main": "index.js",
   "scripts": {
-    "test": "jest --silent --colors --noStackTrace --passWithNoTests",
+    "test": "jest --colors --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
@@ -30,7 +30,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "^6.0.0",
-    "jest": "^27.0.4",
+    "jest": "^27.0.6",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1"
   },
