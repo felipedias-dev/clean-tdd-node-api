@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 const MongoHelper = require('../helpers/mongo-helper');
 const LoadUserByEmailRepository = require('./load-user-by-email-repository');
 const { MissingParamError } = require('../../utils/errors');
