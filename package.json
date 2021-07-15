@@ -2,8 +2,9 @@
   "name": "clean-tdd-node-api",
   "version": "1.0.0",
   "description": "API em NodeJS com Clean Architecture e TDD",
-  "main": "index.js",
+  "main": "src/main/index.js",
   "scripts": {
+    "start": "node src/main/index.js",
     "test": "jest --colors --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
