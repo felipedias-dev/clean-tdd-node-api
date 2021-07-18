@@ -11,16 +11,4 @@ describe('App Setup', () => {
 
     expect(testResponse.headers['x-powered-by']).toBeUndefined();
   });
-
-  test('Should enable CORS', async () => {
-    app.get('/test_cors', (request, response) => {
-      response.send('');
-    });
-
-    const testResponse = await supertest(app).get('/test_cors');
-
-    expect(testResponse.headers['access-control-allow-origin']).toBe('*');
-    expect(testResponse.headers['access-control-allow-methods']).toBe('*');
-    expect(testResponse.headers['access-control-allow-headers']).toBe('*');
-  });
 });
