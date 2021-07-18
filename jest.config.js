@@ -5,9 +5,8 @@
 
 module.exports = {
   collectCoverage: true,
-  coverageProvider: 'v8',
   testEnvironment: 'node',
-  collectCoverageFrom: ['**/src/**/*.js'],
+  collectCoverageFrom: ['**/src/**/*.js', '!**/src/main/**'],
   preset: '@shelf/jest-mongodb',
   watchPathIgnorePatterns: ['globalConfig'],
 };
