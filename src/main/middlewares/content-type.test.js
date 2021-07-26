@@ -1,9 +1,9 @@
 /* eslint-disable global-require */
 const supertest = require('supertest');
 
-describe('Content-Type Middleware', () => {
-  let app;
+let app;
 
+describe('Content-Type Middleware', () => {
   beforeEach(() => {
     jest.resetModules();
     app = require('../config/app');
