@@ -85,7 +85,7 @@ const makeTokenGenerator = () => {
       this.accessToken = 'any_token';
     }
 
-    async generate(userId) {
+    generate(userId) {
       this.userId = userId;
 
       return this.accessToken;
@@ -97,7 +97,7 @@ const makeTokenGenerator = () => {
 
 const makeTokenGeneratorWithError = () => {
   class TokenGeneratorSpy {
-    async generate() {
+    generate() {
       throw new Error();
     }
   }
