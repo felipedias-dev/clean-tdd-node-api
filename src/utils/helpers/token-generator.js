@@ -6,7 +6,7 @@ module.exports = class TokenGenerator {
     this.secret = secret;
   }
 
-  async generate(id) {
+  generate(id) {
     if (!this.secret) {
       throw new MissingParamError('secret');
     }
